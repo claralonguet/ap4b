@@ -1,72 +1,51 @@
-public class Regle {
-    private int id;
-    private Predicate<Code> condition;
+public class Critere {
+    private List<Regle> regles;
+    private int indiceCorrect;
+    private int numeroCritere;
 
-    public Regle(int id, String expression) {
-        this.id = id;
-        this.condition = creerPredicate(expression);
+    public Critere(List<Regle> regles, int indiceCorrect, int numeroCritere) {
+        this.regles = regles;
+        this.indiceCorrect = indiceCorrect;
+        this.numeroCritere = numeroCritere;
     }
 
-    public int getId() {
-        return id;
+    public boolean testerCritere(Code code) {
+        return regles.get(indiceCorrect).testerRegle(code);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Regle getBonneRegle() {
+        return regles.get(indiceCorrect);
     }
 
-    public boolean testerRegle(Code code) {
-        return condition.test(code);
+    public Regle getRegle(int indice) {
+        return regles.get(indice);
     }
 
-    private Predicate<Code> creerPredicate(String expression) {
-        return code -> {
-            int b = code.getBleu();
-            int j = code.getJaune();
-            int v = code.getViolet();
+    public int getNumeroCritere(){
+        return numeroCritere;
+    }
 
-            try {
-                if (expression.contains("<")) {
-                    String[] parts = expression.split("<");
-                    return getValeur(parts[0], b, j, v) <
-                           getValeur(parts[1], b, j, v);
-                } else if (expression.contains(">")) {
-                    String[] parts = expression.split(">");
-                    return getValeur(parts[0], b, j, v) >
-                           getValeur(parts[1], b, j, v);
-                } else if (expression.contains("=")) {
-                    String[] parts = expression.split("=");
-                    return getValeur(parts[0], b, j, v) ==
-                           getValeur(parts[1], b, j, v);
-                } else if (expression.contains("%")) {
-                    String[] parts = expression.split("%");
-                    return getValeur(parts[0], b, j, v) %
-                           Integer.parseInt(parts[1]) == 0;
-                } else if (expression.contains("&")) {
-                    String[] parts = expression.split("&");
-                    return creerPredicate(parts[0]).test(code) &&
-                           creerPredicate(parts[1]).test(code);
-                } else if (expression.contains("!")) {
-                    String[] parts = expression.split("!");
-                    return !creerPredicate(parts[1]).test(code);
+    public int lenRegles(){
+        return regles.size();
+    }
+
+    public static Critere creerCritere(String cheminFichier, int idCritere, int indiceCorrect) {
+        List<Regle> regles = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(cheminFichier))) {
+            String ligne;
+            while ((ligne = reader.readLine()) != null) {
+                String[] parties = ligne.split(";");
+                int id = Integer.parseInt(parties[0]);
+                if (id == idCritere) {
+                    for (int i = 1; i < parties.length; i++) {
+                        regles.add(new Regle(i - 1, parties[i]));
+                    }
+                    break;
                 }
-            } catch (Exception e) {
-                System.err.println("Erreur dans l'expression : " + expression);
             }
-            return false;
-        };
-    }
-
-    private int getValeur(String token, int b, int j, int v) {
-        switch (token.trim().toLowerCase()) {
-            case "b": return b;
-            case "j": return j;
-            case "v": return v;
-            case "p": return (b % 2 == 0 ? 1 : 0) + (j % 2 == 0 ? 1 : 0) + (v % 2 == 0 ? 1 : 0);
-            case "i": return (b % 2 != 0 ? 1 : 0) + (j % 2 != 0 ? 1 : 0) + (v % 2 != 0 ? 1 : 0);
-            default:
-                if (token.matches("\\d+")) return Integer.parseInt(token);
-                throw new IllegalArgumentException("Valeur inconnue : " + token);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier : " + e.getMessage());
         }
+        return new Critere(regles, indiceCorrect, idCritere);
     }
 }

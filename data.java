@@ -1,43 +1,55 @@
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 // Classe Data
 public class Data {
-    private HashMap<String, List<Integer>> code;
+    private List<String> critere;
+    private List<List<Integer>> code;
 
     public Data() {
-        this.code = new HashMap<>();
+        this.critere = new ArrayList<>();
+        this.code = new ArrayList<>();
     }
 
-    // Getter pour le dictionnaire 'code'
-    public HashMap<String, List<Integer>> getCode() {
+    // Getter pour la liste 'critere'
+    public List<String> getCritere() {
+        return critere;
+    }
+
+    // Getter pour la liste 'code'
+    public List<List<Integer>> getCode() {
         return code;
     }
 
-    // Setter pour le dictionnaire 'code'
-    public void setCode(HashMap<String, List<Integer>> code) throws InvalidDataException {
-        if (code == null) {
-            throw new InvalidDataException("Le dictionnaire de code ne peut pas être nul");
+    // Setter pour les listes 'critere' et 'code'
+    public void setCritereAndCode(List<String> critere, List<List<Integer>> code) throws InvalidDataException {
+        if (critere == null || code == null) {
+            throw new InvalidDataException("Les listes de critère et de code ne peuvent pas être nulles");
         }
+        if (critere.size() != code.size()) {
+            throw new InvalidDataException("Les listes de critère et de code doivent avoir la même taille");
+        }
+        this.critere = critere;
         this.code = code;
     }
 
-    // Méthode pour ajouter une nouvelle entrée au dictionnaire
-    public void addCode(String key, List<Integer> value) throws InvalidDataException {
-        if (key == null || key.isEmpty()) {
-            throw new InvalidDataException("La clé ne peut pas être nulle ou vide");
+    // Méthode pour ajouter une nouvelle entrée aux listes
+    public void addData(String criterion, List<Integer> codeEntry) throws InvalidDataException {
+        if (criterion == null || criterion.isEmpty()) {
+            throw new InvalidDataException("Le critère ne peut pas être nul ou vide");
         }
-        if (value == null || value.isEmpty()) {
-            throw new InvalidDataException("La valeur ne peut pas être nulle ou vide");
+        if (codeEntry == null || codeEntry.isEmpty()) {
+            throw new InvalidDataException("La valeur du code ne peut pas être nulle ou vide");
         }
-        this.code.put(key, value);
+        this.critere.add(criterion);
+        this.code.add(codeEntry);
     }
 
     // Méthode pour afficher les données
     public void displayData() {
-        code.forEach((key, value) -> {
-            System.out.println("Code testé : " + key + " - Réponse : " + value);
-        });
+        for (int i = 0; i < critere.size(); i++) {
+            System.out.println("Critère : " + critere.get(i) + " - Réponse : " + code.get(i));
+        }
     }
 }
 

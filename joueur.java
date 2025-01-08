@@ -29,13 +29,17 @@ public class Joueur {
         this.data = data;
     }
 
-    // Méthode pour mettre à jour le joueur (ex: ajouter un nouveau code testé et sa réponse)
-    public void maj(String key, List<Integer> value) {
+    // Méthode pour mettre à jour le joueur (ex: ajouter un nouveau critère testé et sa réponse)
+    public void maj(String criterion, List<Integer> value) {
         System.out.println("Mise à jour des données pour le joueur : " + nom);
-        data.addCode(key, value);
+        try {
+            data.addData(criterion, value);
+        } catch (InvalidDataException e) {
+            System.out.println("Erreur lors de la mise à jour des données : " + e.getMessage());
+        }
     }
 
- ///afficher les informations du joueur
+    // Afficher les informations du joueur
     public void displayJoueur() {
         System.out.println("Nom du joueur : " + nom);
         data.displayData();

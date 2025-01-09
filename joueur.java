@@ -29,13 +29,23 @@ public class Joueur {
         this.data = data;
     }
 
-    // Méthode pour mettre à jour le joueur (ex: ajouter un nouveau critère testé et sa réponse)
-    public void maj(String criterion, List<Integer> value) {
-        System.out.println("Mise à jour des données pour le joueur : " + nom);
+    // Méthode pour mettre à jour un critère
+    public void majCritere(Integer criterion) {
+        System.out.println("Mise à jour des critères pour le joueur : " + nom);
         try {
-            data.addData(criterion, value);
+            data.addCritere(criterion);
         } catch (InvalidDataException e) {
-            System.out.println("Erreur lors de la mise à jour des données : " + e.getMessage());
+            System.out.println("Erreur lors de la mise à jour des critères : " + e.getMessage());
+        }
+    }
+
+    // Méthode pour mettre à jour un code
+    public void majCode(Integer codeEntry) {
+        System.out.println("Mise à jour des codes pour le joueur : " + nom);
+        try {
+            data.addCode(codeEntry);
+        } catch (InvalidDataException e) {
+            System.out.println("Erreur lors de la mise à jour des codes : " + e.getMessage());
         }
     }
 

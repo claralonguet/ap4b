@@ -10,7 +10,13 @@ public class CodeInput extends JPanel{
     private ArrayList<Integer> code; 
     private ArrayList<FormattedComboBox<Integer>> boxes;
 
+    private final ArrayList<String> shapes = new ArrayList<>();
+    private final ArrayList<Color> colors = new ArrayList<>();
+
     public CodeInput(){
+
+        shapes.add("triangle"); shapes.add("square"); shapes.add("circle");
+        colors.add(Color.CYAN); colors.add(Color.YELLOW); colors.add(Color.PINK);
 
         setLayout(new GridBagLayout());
 
@@ -21,17 +27,31 @@ public class CodeInput extends JPanel{
         code = new ArrayList<>();
 
         for(int i = 0; i < 3; i++){
+            TexturedPanel p = new TexturedPanel();
+            p.setLayout(new GridBagLayout());
+            GridBagConstraints pGBC = new GridBagConstraints();
+            pGBC.gridx = 0; pGBC.gridy = 0; pGBC.anchor = GridBagConstraints.CENTER;
+            pGBC.fill = GridBagConstraints.NONE;
+            try {
+                GameTexture shape = new GameTexture(shapes.get(i), false, "png");
+                shape = shape.rescaleToFit(new Dimension(100,100));
+                p.setTexture(shape);
+            } catch (Exception e) {
+                System.out.println("Couldn't load shape texture.");
+            }
+
             gbc.gridx = i;
             Integer[] numbers = {1, 2, 3, 4, 5};
-            FormattedComboBox<Integer> numChoice = new FormattedComboBox<>(numbers, Color.BLACK, Color.WHITE, Color.BLACK);
+            FormattedComboBox<Integer> numChoice = new FormattedComboBox<>(numbers, Color.BLACK, colors.get(i), Color.BLACK);
             numChoice.addItemListener(new CodeInputListener());
 
             boxes.add(numChoice);
             code.add(1);
 
-            add(numChoice, gbc); 
+            p.add(numChoice);
+
+            add(p, gbc); 
         }
-        printCode();
     }
 
     public void setInputBlocking(){

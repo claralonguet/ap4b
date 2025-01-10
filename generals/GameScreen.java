@@ -2,33 +2,20 @@ package generals;
 
 import java.awt.*;
 import javax.swing.*;
+import game.Joueur;
 
 public class GameScreen extends JFrame{
-    private String title;
-    private int width; 
-    private int height; 
-    private String playerPseudo;
-    private String playerSkin; 
+    protected Joueur joueur;
     
-    public GameScreen(String title, int width, int height, String pseudo, String skin){
-        this.title = title; 
-        this.width = width;
-        this.height = height; 
-        this.playerPseudo = pseudo;
-        this.playerSkin = skin; 
+    protected boolean isRunning = true;
+    
+    public GameScreen(String title, int width, int height, Joueur joueur){
 
         setTitle(title);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setSize(width, height);
-    }
-
-    public String getSkin(){
-        return playerSkin;
-    }
-
-    public String getPseudo(){
-        return playerPseudo; 
+        this.joueur = joueur;
     }
 
     public GridBagConstraints generateGBC(double wx, double wy){

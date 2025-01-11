@@ -31,11 +31,11 @@ public class GameTexture {
         this.image = ImageIO.read(new File(filePath));
     }
 
-    public GameTexture(String filename, boolean criteria) throws IOException{
+    public GameTexture(String filename, boolean criteria, String imageExt) throws IOException{
         if(criteria){
             this.folder = "criteria"; 
         }
-        String filePath = folder + "/" +  filename + imageExtention;
+        String filePath = folder + "/" +  filename + "." + imageExt;
         this.image = ImageIO.read(new File(filePath));
     }
 

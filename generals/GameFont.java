@@ -1,7 +1,9 @@
 package generals;
 
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.io.*;
+import java.util.Map;
 
 public class GameFont{
     private Font font;
@@ -22,6 +24,13 @@ public class GameFont{
 
     private GameFont(Font f){
         this.font = f; 
+    }
+
+    public void setStrikeThrough(){
+        @SuppressWarnings("unchecked")
+        Map<TextAttribute, Object> attributes = (Map<TextAttribute, Object>) font.getAttributes();
+        attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+        this.font = font.deriveFont(attributes);
     }
 
     public GameFont resize(int size){

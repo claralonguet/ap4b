@@ -10,6 +10,14 @@ public class TexturedPanel extends JPanel {
         this.texture = texture;
     }
 
+    public TexturedPanel(){
+        this.texture = null; 
+    }
+
+    public void setTexture(GameTexture texture){
+        this.texture = texture;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

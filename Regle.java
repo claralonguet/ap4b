@@ -49,6 +49,15 @@ public class Regle {
                 } else if (expression.contains("!")) {
                     String[] parts = expression.split("!");
                     return !creerPredicate(parts[1]).test(code);
+                } else if (expression.contains("*")) {
+                    String[] parts = expression.split("\\*");
+                    int n = Integer.parseInt(parts[0]);  // Nombre attendu d’occurrences
+                    int valeur = Integer.parseInt(parts[1]);  // Valeur à vérifier
+                    int count = 0;
+                    if (b == valeur) count++;
+                    if (j == valeur) count++;
+                    if (v == valeur) count++;
+                    return count == n;
                 }
             } catch (Exception e) {
                 System.err.println("Erreur dans l'expression : " + expression);
